@@ -1,0 +1,34 @@
+services:
+  web:
+    build: .
+    env_file: .env
+    environment:
+      DATABASE_URL: postgresql+psycopg://jobhunter:${POSTGRES_PASSWORD:-cambiar-esta-clave}@db:5432/jobhunter
+    ports: ["8000:8000"]
+    volumes: [jobhunter-data:/data]
+    depends_on: [db]
+    restart: unless-stopped
+
+  # Ejecución diaria automática, independiente del navegador y del proceso web.
+  worker:
+    build: .
+    command: ["python", "-m", "app.worker"]
+    env_file: .env
+    environment:
+      DATABASE_URL: postgresql+psycopg://jobhunter:${POSTGRES_PASSWORD:-cambiar-esta-clave}@db:5432/jobhunter
+    volumes: [jobhunter-data:/data]
+    depends_on: [db]
+    restart: unless-stopped
+
+  db:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_USER: jobhunter
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-cambiar-esta-clave}
+      POSTGRES_DB: jobhunter
+    volumes: [pg-data:/var/lib/postgresql/data]
+    restart: unless-stopped
+
+volumes:
+  jobhunter-data:
+  pg-data:
