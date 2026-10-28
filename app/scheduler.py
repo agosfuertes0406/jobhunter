@@ -5,7 +5,6 @@ y todavía no hubo una ejecución automática hoy. Así se recupera solo si el s
 a la hora pactada, y los cambios de horario se aplican sin reiniciar."""
 from __future__ import annotations
 
-import fcntl
 import logging
 from pathlib import Path
 
@@ -58,9 +57,17 @@ def _acquire_lock() -> bool:
     """Evita dos schedulers simultáneos sobre la misma base (p. ej. varios workers web)."""
     global _lock_handle
     path = Path(config.DATA_DIR) / "scheduler.lock"
-    _lock_handle = open(path, "w")
+    _lock_handle = open(path, "a+")
     try:
-        fcntl.flock(_lock_handle, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        try:
+            import fcntl  # Linux / macOS
+
+            fcntl.flock(_lock_handle, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        except ImportError:
+            import msvcrt  # Windows
+
+            _lock_handle.seek(0)
+            msvcrt.locking(_lock_handle.fileno(), msvcrt.LK_NBLCK, 1)
         return True
     except OSError:
         return False

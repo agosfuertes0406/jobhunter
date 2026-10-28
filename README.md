@@ -63,7 +63,25 @@ Limitaciones honestas:
   `python -m app.cli check-sources` (ver sección 6). El parser de alertas se probó con emails de ejemplo ficticios;
   si algún portal cambia el formato de sus emails, el conector lo reportará con 0 resultados en el panel de Fuentes.
 
-## 3. Puesta en marcha local
+## Uso gratis en tu computadora (sin servidor y sin IA paga)
+
+1. Instalá **Python 3.12 o superior** desde https://www.python.org/downloads/
+   (en Windows, marcá la casilla **"Add python.exe to PATH"** en el instalador).
+2. Descargá este proyecto (botón verde **Code → Download ZIP** en GitHub) y descomprimilo en una carpeta fija,
+   por ejemplo `Documentos/jobhunter`.
+3. Doble clic en **`iniciar_windows.bat`** (Windows) o **`iniciar_mac.command`** (Mac; si macOS lo bloquea:
+   clic derecho → Abrir). La primera vez instala todo (unos minutos); después arranca en segundos y abre
+   http://localhost:8000 en tu navegador.
+4. Dejá esa ventana abierta mientras uses la app. La búsqueda diaria se ejecuta sola a la hora configurada
+   **mientras la ventana esté abierta**; si a esa hora la computadora estaba apagada, se ejecuta apenas la abrís.
+5. Opcional: completá el archivo `.env` (se crea solo la primera vez) con tu Gmail y su contraseña de aplicación
+   para recibir el informe y leer las alertas de LinkedIn, ZonaJobs, Computrabajo e Indeed. Cerrá y volvé a abrir
+   la app después de editarlo.
+
+Sin `ANTHROPIC_API_KEY` la app usa el análisis local: revisá y corregí tu perfil después de subir el CV.
+Tus datos quedan solo en tu computadora, en la carpeta `data/` (hacé copia de seguridad de esa carpeta).
+
+## 3. Puesta en marcha local (desarrollo)
 
 ```bash
 cd jobhunter-ai

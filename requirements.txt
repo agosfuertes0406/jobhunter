@@ -11,5 +11,7 @@ cryptography==50.0.1
 httpx==0.28.1
 beautifulsoup4==4.15.0
 itsdangerous==2.2.0
+# Zonas horarias en Windows (que no trae la base de datos de husos horarios)
+tzdata==2025.2
 # Solo si usás PostgreSQL (DATABASE_URL=postgresql+psycopg://...)
 psycopg[binary]==3.3.6
